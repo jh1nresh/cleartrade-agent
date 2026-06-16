@@ -1,0 +1,104 @@
+{
+  "artifact": "cleartrade-track2-strategy",
+  "artifactVersion": "0.1.0",
+  "competition": "BNB Hack: AI Trading Agent Edition",
+  "track": "Track 2 - Strategy Skills",
+  "status": "submission_candidate_paper_only",
+  "sponsorCapabilityReceipt": {
+    "primary": "CoinMarketCap Agent Hub / market data",
+    "mode": "declared_and_schema_bound",
+    "note": "Live CMC fetch is intentionally gated; the strategy packet declares the CMC inputs and replay contract without wallet signing."
+  },
+  "safetyBoundary": {
+    "liveSigning": "disabled",
+    "privateKeys": "not accepted by env or strategy packet",
+    "funds": "paper-only; no customer or user funds"
+  },
+  "strategy": {
+    "strategyId": "bnb-momentum-v0",
+    "objective": "track2_strategy_skill",
+    "sponsorCapabilities": [
+      "coinmarketcap_agent_hub",
+      "coinmarketcap_market_data"
+    ],
+    "universe": [
+      "BNB",
+      "CAKE"
+    ],
+    "timeframe": "1h",
+    "signalInputs": {
+      "cmcMarketData": [
+        "price",
+        "volume24h",
+        "marketCap",
+        "pctChange24h"
+      ],
+      "technicalIndicators": [
+        "ema_fast_slow_cross",
+        "rsi"
+      ],
+      "sentiment": [
+        "cmc_trending_rank"
+      ]
+    },
+    "entryRules": [
+      "EMA(12) crosses above EMA(26) on the 1h close",
+      "RSI(14) between 50 and 70 (momentum, not overbought)",
+      "24h volume above 30-day median (volume confirmation)"
+    ],
+    "exitRules": [
+      "EMA(12) crosses back below EMA(26)",
+      "stop-loss hit",
+      "RSI(14) > 80 (overbought; take partial profit)"
+    ],
+    "riskRules": {
+      "maxPositionPct": 25,
+      "maxDailyLossPct": 5,
+      "maxDrawdownPct": 12,
+      "stopLossRule": "fixed -4% from entry, tightened to breakeven after +3%",
+      "takeProfitRule": "scale out 50% at +6%, trail the rest",
+      "killSwitch": [
+        "drawdown >= 12%",
+        "3 consecutive losing trades",
+        "CMC data older than 120s",
+        "receipt writer failure"
+      ]
+    },
+    "executionRules": {
+      "mode": "paper",
+      "maxSlippageBps": 100,
+      "minLiquidityUsd": 250000,
+      "simulatedCosts": true
+    },
+    "backtest": {
+      "dataSource": "CoinMarketCap Agent Hub / market-data snapshots",
+      "replayWindow": "2026-06-22T00:00:00Z to 2026-06-28T23:59:59Z",
+      "costModel": "spot execution with configured slippage cap and simulated fees",
+      "replayRules": [
+        "evaluate entry and exit rules on closed 1h candles",
+        "reject trades when CMC data is older than 120 seconds",
+        "record one sealed receipt for every signal and risk decision",
+        "score pnl_after_costs with max_drawdown, win_rate, turnover, and receipt_coverage"
+      ]
+    },
+    "evaluation": {
+      "primaryMetric": "pnl_after_costs",
+      "secondaryMetrics": [
+        "max_drawdown",
+        "win_rate",
+        "turnover",
+        "receipt_coverage"
+      ]
+    }
+  },
+  "verification": {
+    "commands": [
+      "pnpm check",
+      "pnpm test",
+      "pnpm dry-run",
+      "pnpm strategy"
+    ],
+    "dryRunReceipt": "pnpm dry-run emits sealed signal and risk receipts"
+  },
+  "artifactHash": "99c528ddfda7db46095251223ff255c93eb1e0466479f14a08c05708d17cfde5"
+}

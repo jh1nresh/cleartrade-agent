@@ -7,9 +7,11 @@ Repo rails for any coding agent working here.
 ```bash
 pnpm check   # tsc --noEmit
 pnpm test    # vitest run
+pnpm strategy
 ```
 
-Both must be green. `pnpm dry-run` should print sealed receipts with a risk verdict.
+All must be green. `pnpm dry-run` should print sealed receipts with a risk verdict.
+`pnpm strategy` should write the Track 2 JSON + markdown packet under `artifacts/`.
 
 ## Hard boundaries (non-negotiable)
 
