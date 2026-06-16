@@ -7,7 +7,11 @@ import type { ClearTradeStrategySpec } from "../schema/strategy.js";
 export const demoStrategy: ClearTradeStrategySpec = {
   strategyId: "bnb-momentum-v0",
   objective: "track2_strategy_skill",
-  sponsorCapabilities: ["coinmarketcap_agent_hub", "coinmarketcap_market_data"],
+  sponsorCapabilities: [
+    "coinmarketcap_agent_hub",
+    "coinmarketcap_market_data",
+    "bnb_ai_agent_sdk",
+  ],
   universe: ["BNB", "CAKE"],
   timeframe: "1h",
   signalInputs: {

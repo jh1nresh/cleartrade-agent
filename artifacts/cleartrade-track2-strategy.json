@@ -14,12 +14,91 @@
     "privateKeys": "not accepted by env or strategy packet",
     "funds": "paper-only; no customer or user funds"
   },
+  "bnbAgentSdkPlan": {
+    "sdk": {
+      "package": "bnbagent",
+      "language": "python",
+      "docs": "https://docs.bnbchain.org/developer-kit/bnbagent-sdk/"
+    },
+    "mode": "dry_run",
+    "capabilities": [
+      "erc8004_agent_identity",
+      "erc8183_agentic_commerce"
+    ],
+    "registrationFile": {
+      "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+      "name": "ClearTrade Agent",
+      "description": "Paper-only BNB Hack trading strategy agent with receipt-backed risk gates.",
+      "image": "",
+      "services": [
+        {
+          "name": "ERC-8183",
+          "endpoint": "local-only://cleartrade-agent/erc8183/status",
+          "version": "0.1.0"
+        }
+      ],
+      "registrations": [],
+      "supportedTrust": [
+        "erc8004",
+        "erc8183"
+      ]
+    },
+    "jobDescription": {
+      "version": 1,
+      "negotiated_at": 1750000000,
+      "task": "Evaluate bnb-momentum-v0 trade intent and produce sealed paper-trade receipts.",
+      "terms": {
+        "deliverables": [
+          "strategy packet",
+          "signal receipt",
+          "risk receipt",
+          "execution dry-run receipt"
+        ],
+        "quality_standards": [
+          "no wallet signing",
+          "no network submission",
+          "all receipts hash-verifiable"
+        ],
+        "success_criteria": [
+          "risk governor returns a deterministic verdict",
+          "execution intent is not submitted on-chain in Track 2 mode"
+        ]
+      },
+      "price": "0",
+      "currency": "0x0000000000000000000000000000000000000000"
+    },
+    "deliverableManifest": {
+      "version": 1,
+      "job_id": 0,
+      "chain_id": 97,
+      "contracts": {
+        "commerce": "0x0000000000000000000000000000000000000000",
+        "router": "0x0000000000000000000000000000000000000000",
+        "policy": "0x0000000000000000000000000000000000000000"
+      },
+      "response": {
+        "content": "{\n  \"strategyId\": \"bnb-momentum-v0\",\n  \"objective\": \"track2_strategy_skill\",\n  \"tradeIntent\": {\n    \"chain\": \"bsc\",\n    \"assetIn\": \"USDT\",\n    \"assetOut\": \"BNB\",\n    \"notionalUsd\": 2500,\n    \"maxSlippageBps\": 100,\n    \"rationale\": \"Track 2 strategy packet sample intent\"\n  },\n  \"tradeHash\": \"ad64f1a949679f8314f51c0b8c3451a5245c4a88a417d7c13138b757f4a50727\"\n}",
+        "content_type": "application/json"
+      },
+      "metadata": {
+        "strategyId": "bnb-momentum-v0",
+        "mode": "paper",
+        "tradeHash": "ad64f1a949679f8314f51c0b8c3451a5245c4a88a417d7c13138b757f4a50727"
+      }
+    },
+    "safetyBoundary": {
+      "wallet": "not_loaded",
+      "networkCalls": "disabled",
+      "onChainSubmit": "disabled"
+    }
+  },
   "strategy": {
     "strategyId": "bnb-momentum-v0",
     "objective": "track2_strategy_skill",
     "sponsorCapabilities": [
       "coinmarketcap_agent_hub",
-      "coinmarketcap_market_data"
+      "coinmarketcap_market_data",
+      "bnb_ai_agent_sdk"
     ],
     "universe": [
       "BNB",
@@ -100,5 +179,5 @@
     ],
     "dryRunReceipt": "pnpm dry-run emits sealed signal and risk receipts"
   },
-  "artifactHash": "99c528ddfda7db46095251223ff255c93eb1e0466479f14a08c05708d17cfde5"
+  "artifactHash": "63389964423a2c30788d5d015a0e1871c8b8b52b384ca1e2ae36c47a54a80e8a"
 }

@@ -22,6 +22,8 @@ All must be green. `pnpm dry-run` should print sealed receipts with a risk verdi
   offline stub until the competition sandbox tool list is confirmed.
 - Do **not** add real CMC live-fetch logic without confirming the Open Questions
   in the spec first.
+- Do **not** run live BNBAgent SDK registration, funding, settlement, or server
+  processes without explicit human approval and sandbox credentials.
 
 ## Conventions
 

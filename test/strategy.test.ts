@@ -33,6 +33,10 @@ describe("strategy schema", () => {
     expect(() => parseStrategySpec(bad)).toThrow();
   });
 
+  it("declares the BNB AI Agent SDK sponsor capability", () => {
+    expect(demoStrategy.sponsorCapabilities).toContain("bnb_ai_agent_sdk");
+  });
+
   it("requires replay rules for the backtest contract", () => {
     const bad = {
       ...demoStrategy,

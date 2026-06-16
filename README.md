@@ -51,6 +51,7 @@ CMC market data
 - **Receipt schema + hash** — `src/schema/receipt.ts`, `src/receipt/hash.ts`
 - **Risk Governor** — `src/risk/governor.ts` (kill-switch › block › size-down)
 - **Demo strategy** — `src/strategy/demo.ts` (`bnb-momentum-v0`)
+- **BNB AI Agent SDK adapter** — `src/bnbagent/adapter.ts` (ERC-8004 / ERC-8183 dry-run receipt)
 
 ## Track 2 submission packet
 
@@ -70,7 +71,29 @@ Submission artifacts:
 - `artifacts/cleartrade-track2-strategy.md` — judge-readable strategy report
 
 The strategy packet includes sponsor capabilities, CMC signal inputs, backtest
-window, replay rules, cost model, safety boundary, and verification commands.
+window, replay rules, cost model, BNB AI Agent SDK dry-run plan, safety boundary,
+and verification commands.
+
+## BNB AI Agent SDK integration
+
+ClearTrade declares the BNB AI Agent SDK sponsor capability through a dry-run
+adapter that mirrors the official Python `bnbagent` SDK's ERC-8004 registration
+file and ERC-8183 job / deliverable manifest shapes
+([docs](https://docs.bnbchain.org/developer-kit/bnbagent-sdk/)). In Track 2 mode
+it does not load a wallet, call the network, register an agent, fund escrow, or
+submit a deliverable on-chain.
+
+Current integration surface:
+
+- `src/bnbagent/adapter.ts` builds the ERC-8004 registration file, ERC-8183 job
+  description, and deliverable manifest.
+- `pnpm dry-run` emits an execution receipt with `venue:
+  BNBAgent SDK ERC-8183 dry-run`.
+- `pnpm strategy` includes the same BNB Agent SDK plan in the JSON + markdown
+  submission packet.
+
+Live SDK usage remains gated behind explicit approval because the Python SDK
+requires wallet credentials for ERC-8004 registration and ERC-8183 settlement.
 
 ## Safety boundary (do not cross without explicit approval)
 

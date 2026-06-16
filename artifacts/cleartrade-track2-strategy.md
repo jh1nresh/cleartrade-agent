@@ -6,7 +6,8 @@
 - Track: Track 2 - Strategy Skills
 - Status: submission_candidate_paper_only
 - Sponsor capability: CoinMarketCap Agent Hub / market data
-- Artifact hash: `99c528ddfda7db46095251223ff255c93eb1e0466479f14a08c05708d17cfde5`
+- BNB Agent SDK: erc8004_agent_identity + erc8183_agentic_commerce
+- Artifact hash: `63389964423a2c30788d5d015a0e1871c8b8b52b384ca1e2ae36c47a54a80e8a`
 
 ## Strategy
 
@@ -33,6 +34,9 @@
 - Live signing: disabled
 - Private keys: not accepted by env or strategy packet
 - Funds: paper-only; no customer or user funds
+- BNBAgent wallet: not_loaded
+- BNBAgent network calls: disabled
+- BNBAgent on-chain submit: disabled
 
 ## Verification
 
