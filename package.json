@@ -1,0 +1,25 @@
+{
+  "name": "cleartrade-agent",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Auditable AI trading agent for BNB Hack — every signal/risk/execution/evaluation leaves a receipt.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dry-run": "tsx scripts/dry-run.ts",
+    "strategy": "tsx scripts/strategy.ts"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
