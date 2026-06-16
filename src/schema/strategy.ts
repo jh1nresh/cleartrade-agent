@@ -23,9 +23,17 @@ export const ExecutionRulesSchema = z.object({
   simulatedCosts: z.boolean(),
 });
 
+export const SponsorCapabilitySchema = z.enum([
+  "coinmarketcap_agent_hub",
+  "coinmarketcap_market_data",
+  "trust_wallet_agent_kit",
+  "bnb_ai_agent_sdk",
+]);
+
 export const ClearTradeStrategySpecSchema = z.object({
   strategyId: z.string().min(1),
   objective: z.enum(["track1_live_pnl", "track2_strategy_skill"]),
+  sponsorCapabilities: z.array(SponsorCapabilitySchema).min(1),
   universe: z.array(z.string().min(1)).min(1),
   timeframe: TimeframeSchema,
   signalInputs: z.object({
@@ -39,6 +47,12 @@ export const ClearTradeStrategySpecSchema = z.object({
   exitRules: z.array(z.string().min(1)).min(1),
   riskRules: RiskRulesSchema,
   executionRules: ExecutionRulesSchema,
+  backtest: z.object({
+    dataSource: z.string().min(1),
+    replayWindow: z.string().min(1),
+    costModel: z.string().min(1),
+    replayRules: z.array(z.string().min(1)).min(1),
+  }),
   evaluation: z.object({
     primaryMetric: z.literal("pnl_after_costs"),
     secondaryMetrics: z.array(

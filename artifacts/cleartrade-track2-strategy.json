@@ -1,0 +1,183 @@
+{
+  "artifact": "cleartrade-track2-strategy",
+  "artifactVersion": "0.1.0",
+  "competition": "BNB Hack: AI Trading Agent Edition",
+  "track": "Track 2 - Strategy Skills",
+  "status": "submission_candidate_paper_only",
+  "sponsorCapabilityReceipt": {
+    "primary": "CoinMarketCap Agent Hub / market data",
+    "mode": "declared_and_schema_bound",
+    "note": "Live CMC fetch is intentionally gated; the strategy packet declares the CMC inputs and replay contract without wallet signing."
+  },
+  "safetyBoundary": {
+    "liveSigning": "disabled",
+    "privateKeys": "not accepted by env or strategy packet",
+    "funds": "paper-only; no customer or user funds"
+  },
+  "bnbAgentSdkPlan": {
+    "sdk": {
+      "package": "bnbagent",
+      "language": "python",
+      "docs": "https://docs.bnbchain.org/developer-kit/bnbagent-sdk/"
+    },
+    "mode": "dry_run",
+    "capabilities": [
+      "erc8004_agent_identity",
+      "erc8183_agentic_commerce"
+    ],
+    "registrationFile": {
+      "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+      "name": "ClearTrade Agent",
+      "description": "Paper-only BNB Hack trading strategy agent with receipt-backed risk gates.",
+      "image": "",
+      "services": [
+        {
+          "name": "ERC-8183",
+          "endpoint": "local-only://cleartrade-agent/erc8183/status",
+          "version": "0.1.0"
+        }
+      ],
+      "registrations": [],
+      "supportedTrust": [
+        "erc8004",
+        "erc8183"
+      ]
+    },
+    "jobDescription": {
+      "version": 1,
+      "negotiated_at": 1750000000,
+      "task": "Evaluate bnb-momentum-v0 trade intent and produce sealed paper-trade receipts.",
+      "terms": {
+        "deliverables": [
+          "strategy packet",
+          "signal receipt",
+          "risk receipt",
+          "execution dry-run receipt"
+        ],
+        "quality_standards": [
+          "no wallet signing",
+          "no network submission",
+          "all receipts hash-verifiable"
+        ],
+        "success_criteria": [
+          "risk governor returns a deterministic verdict",
+          "execution intent is not submitted on-chain in Track 2 mode"
+        ]
+      },
+      "price": "0",
+      "currency": "0x0000000000000000000000000000000000000000"
+    },
+    "deliverableManifest": {
+      "version": 1,
+      "job_id": 0,
+      "chain_id": 97,
+      "contracts": {
+        "commerce": "0x0000000000000000000000000000000000000000",
+        "router": "0x0000000000000000000000000000000000000000",
+        "policy": "0x0000000000000000000000000000000000000000"
+      },
+      "response": {
+        "content": "{\n  \"strategyId\": \"bnb-momentum-v0\",\n  \"objective\": \"track2_strategy_skill\",\n  \"tradeIntent\": {\n    \"chain\": \"bsc\",\n    \"assetIn\": \"USDT\",\n    \"assetOut\": \"BNB\",\n    \"notionalUsd\": 2500,\n    \"maxSlippageBps\": 100,\n    \"rationale\": \"Track 2 strategy packet sample intent\"\n  },\n  \"tradeHash\": \"ad64f1a949679f8314f51c0b8c3451a5245c4a88a417d7c13138b757f4a50727\"\n}",
+        "content_type": "application/json"
+      },
+      "metadata": {
+        "strategyId": "bnb-momentum-v0",
+        "mode": "paper",
+        "tradeHash": "ad64f1a949679f8314f51c0b8c3451a5245c4a88a417d7c13138b757f4a50727"
+      }
+    },
+    "safetyBoundary": {
+      "wallet": "not_loaded",
+      "networkCalls": "disabled",
+      "onChainSubmit": "disabled"
+    }
+  },
+  "strategy": {
+    "strategyId": "bnb-momentum-v0",
+    "objective": "track2_strategy_skill",
+    "sponsorCapabilities": [
+      "coinmarketcap_agent_hub",
+      "coinmarketcap_market_data",
+      "bnb_ai_agent_sdk"
+    ],
+    "universe": [
+      "BNB",
+      "CAKE"
+    ],
+    "timeframe": "1h",
+    "signalInputs": {
+      "cmcMarketData": [
+        "price",
+        "volume24h",
+        "marketCap",
+        "pctChange24h"
+      ],
+      "technicalIndicators": [
+        "ema_fast_slow_cross",
+        "rsi"
+      ],
+      "sentiment": [
+        "cmc_trending_rank"
+      ]
+    },
+    "entryRules": [
+      "EMA(12) crosses above EMA(26) on the 1h close",
+      "RSI(14) between 50 and 70 (momentum, not overbought)",
+      "24h volume above 30-day median (volume confirmation)"
+    ],
+    "exitRules": [
+      "EMA(12) crosses back below EMA(26)",
+      "stop-loss hit",
+      "RSI(14) > 80 (overbought; take partial profit)"
+    ],
+    "riskRules": {
+      "maxPositionPct": 25,
+      "maxDailyLossPct": 5,
+      "maxDrawdownPct": 12,
+      "stopLossRule": "fixed -4% from entry, tightened to breakeven after +3%",
+      "takeProfitRule": "scale out 50% at +6%, trail the rest",
+      "killSwitch": [
+        "drawdown >= 12%",
+        "3 consecutive losing trades",
+        "CMC data older than 120s",
+        "receipt writer failure"
+      ]
+    },
+    "executionRules": {
+      "mode": "paper",
+      "maxSlippageBps": 100,
+      "minLiquidityUsd": 250000,
+      "simulatedCosts": true
+    },
+    "backtest": {
+      "dataSource": "CoinMarketCap Agent Hub / market-data snapshots",
+      "replayWindow": "2026-06-22T00:00:00Z to 2026-06-28T23:59:59Z",
+      "costModel": "spot execution with configured slippage cap and simulated fees",
+      "replayRules": [
+        "evaluate entry and exit rules on closed 1h candles",
+        "reject trades when CMC data is older than 120 seconds",
+        "record one sealed receipt for every signal and risk decision",
+        "score pnl_after_costs with max_drawdown, win_rate, turnover, and receipt_coverage"
+      ]
+    },
+    "evaluation": {
+      "primaryMetric": "pnl_after_costs",
+      "secondaryMetrics": [
+        "max_drawdown",
+        "win_rate",
+        "turnover",
+        "receipt_coverage"
+      ]
+    }
+  },
+  "verification": {
+    "commands": [
+      "pnpm check",
+      "pnpm test",
+      "pnpm dry-run",
+      "pnpm strategy"
+    ],
+    "dryRunReceipt": "pnpm dry-run emits sealed signal and risk receipts"
+  },
+  "artifactHash": "63389964423a2c30788d5d015a0e1871c8b8b52b384ca1e2ae36c47a54a80e8a"
+}

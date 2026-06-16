@@ -7,6 +7,11 @@ import type { ClearTradeStrategySpec } from "../schema/strategy.js";
 export const demoStrategy: ClearTradeStrategySpec = {
   strategyId: "bnb-momentum-v0",
   objective: "track2_strategy_skill",
+  sponsorCapabilities: [
+    "coinmarketcap_agent_hub",
+    "coinmarketcap_market_data",
+    "bnb_ai_agent_sdk",
+  ],
   universe: ["BNB", "CAKE"],
   timeframe: "1h",
   signalInputs: {
@@ -42,6 +47,17 @@ export const demoStrategy: ClearTradeStrategySpec = {
     maxSlippageBps: 100,
     minLiquidityUsd: 250_000,
     simulatedCosts: true,
+  },
+  backtest: {
+    dataSource: "CoinMarketCap Agent Hub / market-data snapshots",
+    replayWindow: "2026-06-22T00:00:00Z to 2026-06-28T23:59:59Z",
+    costModel: "spot execution with configured slippage cap and simulated fees",
+    replayRules: [
+      "evaluate entry and exit rules on closed 1h candles",
+      "reject trades when CMC data is older than 120 seconds",
+      "record one sealed receipt for every signal and risk decision",
+      "score pnl_after_costs with max_drawdown, win_rate, turnover, and receipt_coverage",
+    ],
   },
   evaluation: {
     primaryMetric: "pnl_after_costs",

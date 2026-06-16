@@ -7,9 +7,11 @@ Repo rails for any coding agent working here.
 ```bash
 pnpm check   # tsc --noEmit
 pnpm test    # vitest run
+pnpm strategy
 ```
 
-Both must be green. `pnpm dry-run` should print sealed receipts with a risk verdict.
+All must be green. `pnpm dry-run` should print sealed receipts with a risk verdict.
+`pnpm strategy` should write the Track 2 JSON + markdown packet under `artifacts/`.
 
 ## Hard boundaries (non-negotiable)
 
@@ -20,6 +22,8 @@ Both must be green. `pnpm dry-run` should print sealed receipts with a risk verd
   offline stub until the competition sandbox tool list is confirmed.
 - Do **not** add real CMC live-fetch logic without confirming the Open Questions
   in the spec first.
+- Do **not** run live BNBAgent SDK registration, funding, settlement, or server
+  processes without explicit human approval and sandbox credentials.
 
 ## Conventions
 
