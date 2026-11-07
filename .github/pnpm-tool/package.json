@@ -1,0 +1,8 @@
+{
+  "name": "incident-ci-package-manager",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "pnpm": "10.18.0"
+  }
+}

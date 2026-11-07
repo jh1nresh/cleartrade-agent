@@ -12,6 +12,9 @@ importers:
         specifier: ^3.23.8
         version: 3.25.76
     devDependencies:
+      '@types/node':
+        specifier: 22.19.12
+        version: 22.19.12
       tsx:
         specifier: ^4.19.2
         version: 4.22.4
@@ -26,6 +29,12 @@ importers:
         version: 4.1.9(vite@8.0.16(esbuild@0.28.1)(tsx@4.22.4))
 
 packages:
+
+  '@types/node@22.19.12':
+    resolution: {integrity: sha512-0QEp0aPJYSyf6RrTjDB7HlKgNMTY+V2C7ESTaVt6G9gQ0rPLzTGz7OF2NXTLR5vcy7HJEtIUsyWLsfX0kTqJBA==}
+
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -619,6 +628,12 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
+
+  '@types/node@22.19.12':
+    dependencies:
+      undici-types: 6.21.0
+
+  undici-types@6.21.0: {}
 
   '@emnapi/core@1.10.0':
     dependencies:
